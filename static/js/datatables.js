@@ -7,6 +7,16 @@ if (typeof (require) != 'undefined') {
 }
 // Bind the event handler to the toolbar buttons
 exports.postAceInit = function (hook, context) {
+    $.alignMenu = function (menu, id, addX, addY, scrollY) {
+          var region = YAHOO.util.Dom.getRegion(id);
+                if (typeof (id) == 'string' && id == 'tbl-menu') {
+                    menu.cfg.setProperty("xy", [region.left, region.bottom]);
+                } else if (typeof (id) == 'string') {
+                    menu.cfg.setProperty("xy", [region.right, region.top]);
+                } else {
+                    menu.cfg.setProperty("xy", [30 + addX, 36 + addY - scrollY]);
+         }
+    }
     $.createTableMenu = function (init) {
         if ($.tblContextMenu) {
             if (!$.tblContextMenuOpened) {
@@ -330,16 +340,6 @@ exports.postAceInit = function (hook, context) {
             var subMenus = $.tblContextMenu.getSubmenus();
             subMenus[0].setFooter(matrixTable);
             $.tblContextMenu.render(document.body);
-            $.alignMenu = function (menu, id, addX, addY, scrollY) {
-                var region = YAHOO.util.Dom.getRegion(id);
-                if (typeof (id) == 'string' && id == 'tbl-menu') {
-                    menu.cfg.setProperty("xy", [region.left, region.bottom]);
-                } else if (typeof (id) == 'string') {
-                    menu.cfg.setProperty("xy", [region.right, region.top]);
-                } else {
-                    menu.cfg.setProperty("xy", [30 + addX, 36 + addY - scrollY]);
-                }
-            }
             $('table td').hover(function () {
                 for (var x = 0; x <= $(this).index(); x++) {
                     for (var y = 0; y <= $(this).parent().index(); y++) {
